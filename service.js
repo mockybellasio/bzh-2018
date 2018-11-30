@@ -1,49 +1,33 @@
 // tableau qui contiendra toutes les sessions du BreizhCamp
+let request = require("request-promise-native");
 
-    //var nbElements = 12;
-    //callBack(nbElements);
+module.exports = class Service {
 
-    /*var nbresultat = 0;
-   function notiResultat (){
-   nbResultat++;
-   if ( nbResultat ==20 ){
-   callback(talks.length)
-   }
-   }
-     */
+    constructor(){
+        this.talks =  []
+    }
 
+    init() {
+        return Promise.all(
+
+            ['http://2018.breizhcamp.org/json/talks.json',
     
+            'http://2018.breizhcamp.org/json/others.json']
+    
+            .map(url => request(url, {json:true})))
 
-    var talks = [];
+             // [resultat1, resultat2]
+             
+            .then( (tabtalks) =>  {
+                this.talks = tabtalks[0].concat(tabtalks[1])
+                return this.talks.length
+            })
+    }
 
-    exports.init = function (callback) {
-
-    var request = require("request");
-
-    request('http://2018.breizhcamp.org/json/talks.json', { json: true }, function (err, res, tabtalks1) {
-
-        talks = talks.concat(tabtalks1);
-
-        
-
-        // TODO effectuer les requêtes HTTP permettant de récupérer les données du BreizhCamp
-
-
-        request('http://2018.breizhcamp.org/json/others.json', { json: true }, function (err, res, tabtalks2) {
-
-            talks = talks.concat(tabtalks2);
-
-            callback(talks.length);
-        
-      // TODO     => une fois les données récupérées, alimenter la variable talks
+    listerSessions() {
+        return Promise.resolve(this.talks)
+    }
 
 
-
-    // TODO         => invoquer la callback avec le nombre de sessions récupérées *
-
-
-
-        })
-
-    }) 
 }
+

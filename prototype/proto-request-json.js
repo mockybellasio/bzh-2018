@@ -1,7 +1,7 @@
 // importation de la librairie request
 // recherche par défaut dans le répertoire node_modules
 
-var request = require('request')
+let request = require('request')
 
 // Envoie de la requête http
 
@@ -12,7 +12,7 @@ request('https://jsonplaceholder.typicode.com/posts',
 
 // une fonction callback
 
-function(err, res, body) {
+(err, res, body)  =>{
 
     console.log("b");
     
